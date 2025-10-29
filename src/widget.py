@@ -1,39 +1,12 @@
+from src.masks import get_mask_account, get_mask_card_number
 
-def mask_account_card(card_number: str) -> str:
-    """Маскирует номер карты в формате XXXX XX ** XXXX."""
-    cleaned = card_number.replace(" ", "")
-    if len(cleaned) != 16 or not cleaned.isdigit():
-        raise ValueError("Номер карты должен содержать 16 цифр")
 
+def mask_account_card(card_info):
     """
-        Маскирует номер счета в формате **XXXX.
-
-        Args:
-            account_number (str): Номер счета в виде строки.
-
-        Returns:
-            str: Замаскированный номер счета в формате '**XXXX'.
-
-        Example:
-            >>> get_mask_account('1234567890')
-            '**7890'
-            >>> get_mask_account('73654108430135874305')
-            '**4305'
-        """
-    # Убираем все возможные пробелы из входной строки
-    cleaned_number = account_number.replace(" ", "")
-
-
-    if len(cleaned_number) < 4:
-        raise ValueError("Номер счета должен содержать минимум 4 цифры")
-
-    if not cleaned_number.isdigit():
-        raise ValueError("Номер счета должен содержать только цифры")
-
-    # Берем последние 4 цифры и добавляем две звездочки
-    return f"**{cleaned_number[-4:]}"
-
-    return f"{cleaned[:4]} {cleaned[4:6]} ** *** {cleaned[-4:]}"
-
-
+    обрабатывает информацию как о картах, так и о счетах и возвращает строку с замаскированным номером """
+    papse = card_info.split()
+    namber = papse[-1]
+    if papse[0]=="Счет":
+        return " Счет " + get_mask_account(namber)
+    return ' '.join(papse[:-1]) +" "+ get_mask_card_number(namber)
 
